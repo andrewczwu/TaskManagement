@@ -58,12 +58,13 @@ task owner who only ever interacts with their own data.
 - **FR-3.2** The list clearly distinguishes **complete** from **incomplete** tasks.
 - **FR-3.3** When the user has no tasks, the app shows a clear **empty state**
   rather than a blank screen.
-- **FR-3.4** Due dates are displayed correctly in the **user's local time**,
-  regardless of where the user or the server is located.
+- **FR-3.4** Due dates display as the **correct calendar day regardless of
+  timezone** — the day a user enters is the day everyone sees.
 - **FR-3.5** The list has a **sensible default order** so it never looks random:
   outstanding (incomplete) tasks come first, the soonest-due tasks are surfaced
   near the top, and tasks without a due date fall to the bottom. (User-selectable
   sorting is a future consideration, §6.)
+- **FR-3.6** A past-due, incomplete task shows a clear **overdue** indicator.
 
 ### FR-4 — Editing Tasks
 - **FR-4.1** A user can edit an existing task's title, description, and due date.
@@ -158,7 +159,6 @@ Likely next steps once the core is solid:
 - **User-selectable filter & sort** — by completion status and due date (v1 ships
   a fixed default order, FR-3.5).
 - **Search** across task titles/descriptions.
-- **Overdue highlighting** to surface what's urgent at a glance.
 - **Categories/labels** for organizing larger lists.
 - **Account management** — change password, delete account and all associated data.
 

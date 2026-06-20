@@ -78,7 +78,8 @@ product requirement.
   mirrored on the client. Invalid input is rejected with a clear message and the
   form keeps what you typed.
 - **Due dates** — date-only, stored at UTC midnight and shown in UTC so the calendar
-  day is stable across timezones; the input is bounded and validated.
+  day is stable across timezones; the input is bounded and validated. Past-due
+  incomplete tasks show an **Overdue** badge.
 - **Feedback** — every action has loading and error states; the list updates
   immediately after create/edit/delete/toggle without a page refresh.
 - **Tests** — focused backend tests on the two highest-risk areas: ownership
@@ -150,7 +151,7 @@ version:
 - Component and end-to-end tests for the frontend flows.
 - Move the access token to an `httpOnly` cookie (or adopt an external IdP) to remove
   the `localStorage`/XSS trade-off, plus token refresh for longer sessions.
-- User-selectable sorting, filtering, and search, with overdue highlighting.
+- User-selectable sorting, filtering, and search.
 - Account management (change password, delete account and its data).
 
 ---
