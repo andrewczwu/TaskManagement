@@ -19,6 +19,23 @@ body {
   padding: 2rem 1rem;
 }
 
+/* Auth screens (login/register) — centered card on the page. */
+.auth {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.auth .form {
+  width: 100%;
+  max-width: 360px;
+  text-align: left;
+}
+
 h1 {
   font-size: 1.6rem;
 }
