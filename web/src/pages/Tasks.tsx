@@ -48,7 +48,12 @@ export function Tasks() {
 
   const toggle = async (task: Task) => {
     try {
-      await tasksApi.updateTask(task.id, { ...task, isComplete: !task.isComplete })
+      await tasksApi.updateTask(task.id, {
+        title: task.title,
+        description: task.description,
+        dueDate: task.dueDate,
+        isComplete: !task.isComplete,
+      })
       await load()
     } catch {
       setError('Could not update the task.')
