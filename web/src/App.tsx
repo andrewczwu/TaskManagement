@@ -1,9 +1,17 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { RequireAuth } from './auth/RequireAuth'
+import { Login } from './pages/Login'
+import { Register } from './pages/Register'
+import { Tasks } from './pages/Tasks'
+
 function App() {
   return (
-    <main className="container">
-      <h1>Task Manager</h1>
-      <p>Auth and task management are wired up in the following commits.</p>
-    </main>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<RequireAuth><Tasks /></RequireAuth>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 
