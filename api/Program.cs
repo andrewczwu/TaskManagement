@@ -1,6 +1,8 @@
 using Api.Data;
+using Api.Endpoints;
 using Api.Middleware;
 using Api.Models;
+using Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,8 @@ builder.Services.AddIdentityApiEndpoints<ApplicationUser>(options =>
     .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<TaskService>();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -51,5 +55,6 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 // Versioned API surface. Task endpoints are added under this group next.
 var v1 = app.MapGroup("/api/v1");
 v1.MapGroup("/auth").MapIdentityApi<ApplicationUser>();
+v1.MapTaskEndpoints();
 
 app.Run();
