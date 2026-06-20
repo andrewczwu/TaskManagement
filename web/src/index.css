@@ -221,6 +221,15 @@ button.danger {
   color: #666;
 }
 
+.overdue-badge {
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  background: #fde2e2;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
 .task-actions {
   display: flex;
   align-items: center;

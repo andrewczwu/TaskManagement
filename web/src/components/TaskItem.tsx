@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Task } from '../api/tasks'
-import { formatDueDate } from '../lib/datetime'
+import { formatDueDate, isOverdue } from '../lib/datetime'
 
 interface Props {
   task: Task
@@ -11,6 +11,7 @@ interface Props {
 
 export function TaskItem({ task, onToggle, onEdit, onDelete }: Props) {
   const [confirming, setConfirming] = useState(false)
+  const overdue = isOverdue(task.dueDate, task.isComplete)
 
   return (
     <li className={`task ${task.isComplete ? 'done' : ''}`}>
@@ -20,7 +21,10 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: Props) {
       <div className="task-body">
         <span className="task-title">{task.title}</span>
         {task.description && <p className="task-desc">{task.description}</p>}
-        <span className="task-due">{formatDueDate(task.dueDate)}</span>
+        <span className="task-due">
+          {formatDueDate(task.dueDate)}
+          {overdue && <span className="overdue-badge">Overdue</span>}
+        </span>
       </div>
 
       <div className="task-actions">
