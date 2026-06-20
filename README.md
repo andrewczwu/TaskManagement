@@ -77,8 +77,8 @@ product requirement.
 - **Validation** — server-authoritative (empty/whitespace title, length limits),
   mirrored on the client. Invalid input is rejected with a clear message and the
   form keeps what you typed.
-- **Due dates** — stored and compared in UTC, displayed and entered in your local
-  timezone, with a correct round-trip.
+- **Due dates** — date-only, stored at UTC midnight and shown in UTC so the calendar
+  day is stable across timezones; the input is bounded and validated.
 - **Feedback** — every action has loading and error states; the list updates
   immediately after create/edit/delete/toggle without a page refresh.
 - **Tests** — focused backend tests on the two highest-risk areas: ownership

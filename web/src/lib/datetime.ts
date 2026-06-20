@@ -1,20 +1,34 @@
-// Dates cross the wire as UTC ISO strings; the UI works in the user's local time.
+// Due dates are date-only. They're stored at UTC midnight and shown in UTC, so the
+// calendar day never shifts by timezone.
 
-const pad = (n: number) => String(n).padStart(2, '0')
+// Bounds for the date input: years .NET's DateTime can represent. Without an upper
+// bound the field accepts 6-digit years, which serialize to a value the API can't parse.
+export const DUE_MIN = '1900-01-01'
+export const DUE_MAX = '9999-12-31'
 
-// UTC ISO -> value for <input type="datetime-local"> (local time).
-export function toLocalInput(utcIso: string | null): string {
-  if (!utcIso) return ''
-  const d = new Date(utcIso)
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+// UTC ISO -> value for <input type="date"> (YYYY-MM-DD).
+export function toDateInput(utcIso: string | null): string {
+  return utcIso ? utcIso.slice(0, 10) : ''
 }
 
-// datetime-local value (local time) -> UTC ISO string, or null if empty.
-export function fromLocalInput(local: string): string | null {
-  return local ? new Date(local).toISOString() : null
+// <input type="date"> value -> UTC ISO at midnight, or null if empty.
+export function fromDateInput(local: string): string | null {
+  return local ? new Date(`${local}T00:00:00.000Z`).toISOString() : null
 }
 
-// UTC ISO -> human-friendly local string.
+// True when empty, or a real date within the representable range.
+export function isValidDueInput(local: string): boolean {
+  if (!local) return true
+  const d = new Date(`${local}T00:00:00.000Z`)
+  const year = d.getUTCFullYear()
+  return !Number.isNaN(d.getTime()) && year >= 1900 && year <= 9999
+}
+
+// UTC ISO -> human-friendly date (formatted in UTC so the day doesn't shift).
 export function formatDueDate(utcIso: string | null): string {
-  return utcIso ? `Due ${new Date(utcIso).toLocaleString()}` : 'No due date'
+  if (!utcIso) return 'No due date'
+  const date = new Date(utcIso).toLocaleDateString(undefined, {
+    timeZone: 'UTC', year: 'numeric', month: 'short', day: 'numeric',
+  })
+  return `Due ${date}`
 }

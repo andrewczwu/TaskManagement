@@ -49,10 +49,12 @@ letter, and a number.
 | ID | Requirement | Steps | Expected result |
 |---|---|---|---|
 | TC-CREATE-01 | FR-2.1, FR-2.3 | Signed in, enter a title only ("Buy milk"), click **Add task** | Task appears in the list **immediately**, no page refresh. |
-| TC-CREATE-02 | FR-2.2, NFR-6 | Create a task with a description and a due date | Task shows the description and the due date in **your local time**. |
+| TC-CREATE-02 | FR-2.2 | Create a task with a description and a due date | Task shows the description and the due **date** (date-only, no time). |
 | TC-CREATE-03 | FR-8.1, FR-8.2 | Leave the title empty (or only spaces) and submit | Rejected with a clear "title is required" message; the description/due date you entered are preserved. |
 | TC-CREATE-04 | FR-8.1 | Enter a title longer than 200 characters and submit | Rejected with a clear length message. |
 | TC-CREATE-05 | FR-8.2 | After a successful create | The form clears, ready for the next task. |
+| TC-CREATE-06 | FR-8.1 | In Due date, try a 6-digit / out-of-range year, submit | Rejected (input is bounded and a clear "valid due date" message shows); nothing is saved. |
+| TC-CREATE-07 | FR-1.6, FR-8 | Read the form | Title is marked required (`*`); Description and Due date are marked optional. |
 
 ---
 
@@ -64,7 +66,7 @@ letter, and a number.
 | TC-VIEW-02 | FR-3.1 | Create a few tasks | All of your tasks are listed. |
 | TC-VIEW-03 | FR-3.2 | Mark one task complete | Complete and incomplete tasks are visually distinct (e.g. checkbox + strikethrough). |
 | TC-VIEW-04 | FR-3.5 | Create tasks with different due dates, some complete | Order is: incomplete first, then soonest due, with no-due-date tasks last. |
-| TC-VIEW-05 | FR-3.4, NFR-6 | Create a task due at a specific local time, note the displayed time | Displayed due time matches what you entered in your local timezone. |
+| TC-VIEW-05 | FR-3.4, NFR-6 | Create a task with a due date, then view it (optionally change your machine's timezone and reload) | The due **date** displays as the same calendar day regardless of timezone (no day shift). |
 
 ---
 
