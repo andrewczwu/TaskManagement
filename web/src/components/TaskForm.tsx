@@ -15,6 +15,7 @@ export function TaskForm({ initial, submitLabel, onSubmit, onCancel }: Props) {
   const [title, setTitle] = useState(initial?.title ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   const [due, setDue] = useState(toDateInput(initial?.dueDate ?? null))
+  const [isComplete, setIsComplete] = useState(initial?.isComplete ?? false)
   const [errors, setErrors] = useState<string[]>([])
   const [submitting, setSubmitting] = useState(false)
 
@@ -31,7 +32,7 @@ export function TaskForm({ initial, submitLabel, onSubmit, onCancel }: Props) {
         title,
         description: description.trim() ? description : null,
         dueDate: fromDateInput(due),
-        isComplete: initial?.isComplete ?? false, // edit keeps status; the toggle changes it
+        isComplete,
       })
       if (!initial) {
         setTitle('')
@@ -66,6 +67,13 @@ export function TaskForm({ initial, submitLabel, onSubmit, onCancel }: Props) {
         <input type="date" value={due} min={DUE_MIN} max={DUE_MAX}
           onChange={(e) => setDue(e.target.value)} />
       </label>
+      {initial && (
+        <label className="checkbox">
+          <input type="checkbox" checked={isComplete}
+            onChange={(e) => setIsComplete(e.target.checked)} />
+          Completed
+        </label>
+      )}
       <p className="hint"><span className="req">*</span> required</p>
       {errors.length > 0 && (
         <ul className="error" role="alert">{errors.map((m) => <li key={m}>{m}</li>)}</ul>

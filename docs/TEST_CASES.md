@@ -18,10 +18,10 @@ backend's highest-risk logic (ownership, validation) — see `api.Tests/`.
 
 **Test accounts** (register them as part of TC-AUTH-01 / ownership cases):
 
-| Alias | Email | Password |
-|---|---|---|
+| Alias  | Email               | Password    |
+| ------ | ------------------- | ----------- |
 | User A | `alice@example.com` | `Secret123` |
-| User B | `bob@example.com` | `Secret123` |
+| User B | `bob@example.com`   | `Secret123` |
 
 A valid password meets the policy: ≥8 chars, with an uppercase letter, a lowercase
 letter, and a number.
