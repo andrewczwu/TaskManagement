@@ -396,3 +396,36 @@ That's it — two processes, both standard for the stack. Exact commands and por
 will be documented in the root `README.md`. The SQLite file persists across
 restarts (NFR-1) and is **git-ignored** (generated on first run), along with
 `bin/`, `obj/`, `node_modules/`, and `dist/`.
+
+---
+
+## 12. Security
+
+How the common web risks are addressed (NFR-2):
+
+- **SQL injection.** All data access goes through **EF Core with LINQ** — queries
+  are parameterized by the provider. There is **no raw SQL** (`FromSql`/
+  `ExecuteSql`) anywhere, so user input is never concatenated into a query.
+- **Cross-site scripting (XSS) / clean HTML output.** The frontend is **React**,
+  which **escapes all interpolated values** by default; task titles and
+  descriptions render as text, not markup. We use **no `dangerouslySetInnerHTML`,
+  `innerHTML`, or `eval`**, so stored user input can't become executable HTML.
+- **Input handling.** Validation is **server-authoritative** (§6): the title is
+  required and trimmed, lengths are capped (title ≤200, description ≤2000), and the
+  client mirrors these for UX only. Unknown JSON fields are ignored (the API binds
+  to explicit DTOs), so clients can't set `Id`/`UserId`/timestamps.
+- **Security headers (defense-in-depth).** Middleware sets, on every API response:
+  `X-Content-Type-Options: nosniff` (no MIME-sniffing), `X-Frame-Options: DENY` and
+  `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'` (no framing/
+  clickjacking; safe because the API serves only JSON), and `Referrer-Policy:
+  no-referrer`. Covered by a test.
+- **Authentication & ownership.** Passwords are hashed by Identity; every task query
+  is owner-scoped and a non-owned task returns `404` (§3), verified by tests (§9).
+- **Known trade-off.** The bearer token is stored in `localStorage`, which is
+  readable by JS and thus exposed to XSS (mitigated, not eliminated, by the
+  escaping above). Production would move it to an `httpOnly` + `SameSite` cookie
+  with CSRF protection, or use an external IdP's session (§10).
+- **Production additions (out of scope here).** Enforce **HTTPS/HSTS** at the host,
+  add a **CSP for the SPA** at the static-hosting layer (a strict CSP isn't applied
+  in dev because Vite's HMR needs inline/eval), rate-limit auth endpoints, and add
+  account lockout tuning.
