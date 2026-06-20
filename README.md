@@ -57,6 +57,10 @@ Then register an account and start adding tasks. Data persists across restarts
 dotnet test
 ```
 
+For manual end-to-end validation through the UI, see
+[`docs/TEST_CASES.md`](./docs/TEST_CASES.md) — front-end test cases traced to each
+product requirement.
+
 ---
 
 ## What's built
