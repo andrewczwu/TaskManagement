@@ -67,6 +67,7 @@ letter, and a number.
 | TC-VIEW-03 | FR-3.2 | Mark one task complete | Complete and incomplete tasks are visually distinct (e.g. checkbox + strikethrough). |
 | TC-VIEW-04 | FR-3.5 | Create tasks with different due dates, some complete | Order is: incomplete first, then soonest due, with no-due-date tasks last. |
 | TC-VIEW-05 | FR-3.4, NFR-6 | Create a task with a due date, then view it (optionally change your machine's timezone and reload) | The due **date** displays as the same calendar day regardless of timezone (no day shift). |
+| TC-VIEW-06 | FR-3.6 | Create an incomplete task with a past due date | An **Overdue** badge shows. Mark it complete → the badge disappears. |
 
 ---
 
