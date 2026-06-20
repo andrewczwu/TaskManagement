@@ -6,7 +6,10 @@ user signs in and manages their own private list of tasks.
 - **Backend:** ASP.NET Core Web API (.NET 10), EF Core + SQLite, ASP.NET Core Identity
 - **Frontend:** React + TypeScript (Vite)
 
-Product and engineering requirements live in [`docs/`](./docs).
+Requirements live in [`docs/`](./docs): the
+[Product Requirements](./docs/PRODUCT_REQUIREMENTS.md) (functional + non-functional),
+the [Engineering Requirements](./docs/ENGINEERING_REQUIREMENTS.md) (architecture and
+decisions), and [Test Cases](./docs/TEST_CASES.md).
 
 ---
 
