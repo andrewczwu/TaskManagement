@@ -180,8 +180,10 @@ migrations**, checked into the repo and applied automatically on startup (§11),
 a fresh clone gets the correct schema with no manual SQL.
 
 **Timezone rule (NFR-6).** All instants are stored and compared in **UTC**. EF Core
-persists `DateTime` to SQLite as ISO-8601 text; the API serializes UTC ISO-8601;
-the frontend converts to/from the user's local timezone for display and input.
+persists `DateTime` to SQLite as ISO-8601 text and the API serializes UTC ISO-8601.
+`DueDate` is **date-only** from the user's perspective: the client stores it at UTC
+midnight and renders it in UTC, so the calendar day is stable across timezones.
+(`CreatedAt`/`UpdatedAt` are full UTC instants set by the server.)
 
 ### Architectural Decision: SQLite now, production-grade DB later
 
@@ -299,8 +301,9 @@ the auth endpoints.)
   (FR-2.3, FR-4.3, FR-5.2, FR-6.3, NFR-5).
 - **Every async action** renders loading and error states; no silent failures
   (FR-8.3, NFR-4). Forms preserve user input on validation error (FR-8.2).
-- **Dates** are entered/displayed in local time and converted to UTC on the wire
-  (NFR-6).
+- **Due date is date-only** — stored at UTC midnight and displayed in UTC, so the
+  calendar day never shifts by timezone. The input is bounded to a representable
+  year range and validated before submit (NFR-6).
 - **Delete** uses a confirmation step (FR-6.2).
 
 ---

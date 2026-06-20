@@ -71,6 +71,16 @@ textarea {
   margin: 0;
 }
 
+.req {
+  color: #b91c1c;
+}
+
+.optional {
+  color: #777;
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
 .error {
   color: #b91c1c;
   font-size: 0.9rem;
