@@ -11,6 +11,7 @@ public class TaskService(AppDbContext db)
     public async Task<List<TaskResponse>> GetAllAsync(string userId)
     {
         var tasks = await db.Tasks
+            .AsNoTracking()
             .Where(t => t.UserId == userId)
             .OrderBy(t => t.IsComplete)        // incomplete first
             .ThenBy(t => t.DueDate == null)    // tasks with a due date first
