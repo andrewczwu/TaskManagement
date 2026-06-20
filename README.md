@@ -83,6 +83,21 @@ dotnet test
 
 ---
 
+## Security
+
+- **SQL injection** — all data access is EF Core/LINQ (parameterized); no raw SQL.
+- **XSS / clean output** — React escapes all rendered values; no `dangerouslySetInnerHTML`,
+  so stored input renders as text, never markup.
+- **Input** — server-authoritative validation (required/trimmed title, length caps);
+  the API binds to explicit DTOs, so clients can't set `Id`/`UserId`/timestamps.
+- **Headers** — every API response sets `X-Content-Type-Options: nosniff`,
+  `X-Frame-Options: DENY`, a strict `Content-Security-Policy`, and `Referrer-Policy`.
+- **Auth/ownership** — Identity-hashed passwords; tasks are owner-scoped in the query
+  (a non-owned task returns `404`), covered by tests.
+- **Known trade-off** — the token lives in `localStorage` (XSS-exposed); production
+  would use an `httpOnly` cookie or an external IdP (see below). HTTPS/HSTS and a
+  SPA-level CSP belong at the production host.
+
 ## Key decisions and trade-offs
 
 These are explained more fully in
