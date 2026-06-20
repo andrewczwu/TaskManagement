@@ -30,7 +30,7 @@ export function Login() {
   }
 
   return (
-    <div className="container">
+    <div className="auth">
       <h1>Sign in</h1>
       <form onSubmit={onSubmit} className="form">
         <label>
