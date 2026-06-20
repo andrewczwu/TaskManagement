@@ -23,12 +23,7 @@ public class TaskApiIntegrationTests(TestApiFactory factory) : IClassFixture<Tes
     public async Task CreateThenGet_Authenticated_RoundTrips()
     {
         // Arrange
-        var client = factory.CreateClient();
-        var creds = new { email = "roundtrip@x.com", password = "Secret123" };
-        await client.PostAsJsonAsync("/api/v1/auth/register", creds);
-        var login = await client.PostAsJsonAsync("/api/v1/auth/login", creds);
-        var token = (await login.Content.ReadFromJsonAsync<LoginResponse>())!.AccessToken;
-        client.DefaultRequestHeaders.Authorization = new("Bearer", token);
+        var client = await AuthedClientAsync("roundtrip@x.com");
 
         // Act
         var createResponse = await client.PostAsJsonAsync("/api/v1/tasks",
@@ -42,6 +37,36 @@ public class TaskApiIntegrationTests(TestApiFactory factory) : IClassFixture<Tes
         Assert.Equal(HttpStatusCode.OK, getResponse.StatusCode);
         Assert.Equal(created.Id, fetched!.Id);
         Assert.Equal("Write tests", fetched.Title);
+    }
+
+    [Fact]
+    public async Task GetTask_OtherUsersTask_Returns404()
+    {
+        // Arrange
+        var alice = await AuthedClientAsync("owner@x.com");
+        var bob = await AuthedClientAsync("attacker@x.com");
+        var create = await alice.PostAsJsonAsync("/api/v1/tasks",
+            new TaskRequest("Alice's secret", null, null, null));
+        var task = await create.Content.ReadFromJsonAsync<TaskResponse>();
+
+        // Act
+        var response = await bob.GetAsync($"/api/v1/tasks/{task!.Id}");
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    // Registers + logs in a user and returns a client with the bearer token set.
+    private async Task<HttpClient> AuthedClientAsync(string email)
+    {
+        var client = factory.CreateClient();
+        var creds = new { email, password = "Secret123" };
+        await client.PostAsJsonAsync("/api/v1/auth/register", creds);
+        var login = await client.PostAsJsonAsync("/api/v1/auth/login", creds);
+        Assert.True(login.IsSuccessStatusCode, "login should succeed");
+        var token = (await login.Content.ReadFromJsonAsync<LoginResponse>())!.AccessToken;
+        client.DefaultRequestHeaders.Authorization = new("Bearer", token);
+        return client;
     }
 
     private record LoginResponse(string AccessToken);
