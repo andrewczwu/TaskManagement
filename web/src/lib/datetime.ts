@@ -24,6 +24,16 @@ export function isValidDueInput(local: string): boolean {
   return !Number.isNaN(d.getTime()) && year >= 1900 && year <= 9999
 }
 
+// A task is overdue when it isn't complete and its due day is before today.
+// Compares calendar days as YYYY-MM-DD strings (the due day in UTC vs today local).
+export function isOverdue(utcIso: string | null, isComplete: boolean): boolean {
+  if (!utcIso || isComplete) return false
+  const dueDay = utcIso.slice(0, 10)
+  const now = new Date()
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  return dueDay < today
+}
+
 // UTC ISO -> human-friendly date (formatted in UTC so the day doesn't shift).
 export function formatDueDate(utcIso: string | null): string {
   if (!utcIso) return 'No due date'
