@@ -58,3 +58,6 @@ v1.MapGroup("/auth").MapIdentityApi<ApplicationUser>();
 v1.MapTaskEndpoints();
 
 app.Run();
+
+// Exposed so the test project can host the app with WebApplicationFactory.
+public partial class Program;
